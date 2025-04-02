@@ -3,6 +3,7 @@ import zipfile
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.neural_network import MLPClassifier
 from sklearn.svm import SVC
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.naive_bayes import GaussianNB
@@ -49,11 +50,92 @@ def main():
     # print(f"Precision: {precision:.2f}")
     # print(f"Recall:    {recall:.2f}")
   
-    print("NB")
+    # print("NB")
 
-    nb = GaussianNB(var_smoothing=0.5)
-    nb.fit(X,Y)
-    y_pred = nb.predict(X_test)
+    # nb = GaussianNB(var_smoothing=0.5)
+    # nb.fit(X,Y)
+    # y_pred = nb.predict(X_test)
+    
+    # accuracy = accuracy_score(Y_test, y_pred)
+    # f1 = f1_score(Y_test, y_pred)
+    # precision = precision_score(Y_test, y_pred)
+    # recall = recall_score(Y_test, y_pred)
+    
+    # print(f"Accuracy:  {accuracy:.2f}")
+    # print(f"F1 Score:  {f1:.2f}")
+    # print(f"Precision: {precision:.2f}")
+    # print(f"Recall:    {recall:.2f}")
+
+
+    # print("DecisionTreeClassifier")
+
+    # tree = DecisionTreeClassifier()
+    # tree.fit(X,Y)
+    # y_pred = tree.predict(X_test)
+    
+    # accuracy = accuracy_score(Y_test, y_pred)
+    # f1 = f1_score(Y_test, y_pred)
+    # precision = precision_score(Y_test, y_pred)
+    # recall = recall_score(Y_test, y_pred)
+    
+    # print(f"Accuracy:  {accuracy:.2f}")
+    # print(f"F1 Score:  {f1:.2f}")
+    # print(f"Precision: {precision:.2f}")
+    # print(f"Recall:    {recall:.2f}")
+  
+    # print("RandomForestClassifier")
+
+    # rf = RandomForestClassifier()
+    # rf.fit(X,Y)
+    # y_pred = rf.predict(X_test)
+    
+    # accuracy = accuracy_score(Y_test, y_pred)
+    # f1 = f1_score(Y_test, y_pred)
+    # precision = precision_score(Y_test, y_pred)
+    # recall = recall_score(Y_test, y_pred)
+    
+    # print(f"Accuracy:  {accuracy:.2f}")
+    # print(f"F1 Score:  {f1:.2f}")
+    # print(f"Precision: {precision:.2f}")
+    # print(f"Recall:    {recall:.2f}")
+
+    # print("AdaBoostClassifier")
+
+    # ada = AdaBoostClassifier()
+    # ada.fit(X,Y)
+    # y_pred = ada.predict(X_test)
+    
+    # accuracy = accuracy_score(Y_test, y_pred)
+    # f1 = f1_score(Y_test, y_pred)
+    # precision = precision_score(Y_test, y_pred)
+    # recall = recall_score(Y_test, y_pred)
+    
+    # print(f"Accuracy:  {accuracy:.2f}")
+    # print(f"F1 Score:  {f1:.2f}")
+    # print(f"Precision: {precision:.2f}")
+    # print(f"Recall:    {recall:.2f}")
+
+    # print("SVC")
+
+    # svc = SVC(max_iter=1000)
+    # svc.fit(X,Y)
+    # y_pred = svc.predict(X_test)
+    
+    # accuracy = accuracy_score(Y_test, y_pred)
+    # f1 = f1_score(Y_test, y_pred)
+    # precision = precision_score(Y_test, y_pred)
+    # recall = recall_score(Y_test, y_pred)
+    
+    # print(f"Accuracy:  {accuracy:.2f}")
+    # print(f"F1 Score:  {f1:.2f}")
+    # print(f"Precision: {precision:.2f}")
+    # print(f"Recall:    {recall:.2f}")
+ 
+    print("MLP")
+
+    mlp = MLPClassifier(max_iter=100)
+    mlp.fit(X,Y)
+    y_pred = mlp.predict(X_test)
     
     accuracy = accuracy_score(Y_test, y_pred)
     f1 = f1_score(Y_test, y_pred)
