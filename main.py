@@ -1,5 +1,6 @@
 import pandas as pd
 import zipfile
+import time
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
@@ -26,6 +27,23 @@ def load_data():
     return (X, Y)
 
 
+def run_model(model, X, Y, x_test, y_test):
+    inicio_trieino = time.time()
+    model.fit(X, Y)
+    fim_trieino = time.time()
+    y_pred = model.predict(x_test)
+    fim_teste = time.time()
+
+    accuracy = accuracy_score(y_test, y_pred)
+    f1 = f1_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
+    treino = fim_trieino - inicio_trieino
+    teste = fim_teste - fim_trieino
+
+    return (accuracy, f1, precision, recall, treino, teste)
+
+
 def main():
     X, Y = load_data()
     # Normalização dos dados
@@ -36,116 +54,27 @@ def main():
     test_size = 0.2
     X, X_test, Y, Y_test = train_test_split(X, Y, test_size=test_size)
 
-    # knn = KNeighborsClassifier()
-    # knn.fit(X,Y)
-    # y_pred = knn.predict(X_test)
-    
-    # accuracy = accuracy_score(Y_test, y_pred)
-    # f1 = f1_score(Y_test, y_pred)
-    # precision = precision_score(Y_test, y_pred)
-    # recall = recall_score(Y_test, y_pred)
-    
-    # print(f"Accuracy:  {accuracy:.2f}")
-    # print(f"F1 Score:  {f1:.2f}")
-    # print(f"Precision: {precision:.2f}")
-    # print(f"Recall:    {recall:.2f}")
-  
-    # print("NB")
+    models = {
+        "KNN": KNeighborsClassifier(),
+        "Árvore": DecisionTreeClassifier(),
+        "MLP": MLPClassifier(max_iter=100),
+        "SVM": SVC(max_iter=1000),
+        "RandomForest": RandomForestClassifier(),
+        "AdaBoost": AdaBoostClassifier(),
+        "Naive Bayes": GaussianNB(var_smoothing=0.5),
+    }
 
-    # nb = GaussianNB(var_smoothing=0.5)
-    # nb.fit(X,Y)
-    # y_pred = nb.predict(X_test)
-    
-    # accuracy = accuracy_score(Y_test, y_pred)
-    # f1 = f1_score(Y_test, y_pred)
-    # precision = precision_score(Y_test, y_pred)
-    # recall = recall_score(Y_test, y_pred)
-    
-    # print(f"Accuracy:  {accuracy:.2f}")
-    # print(f"F1 Score:  {f1:.2f}")
-    # print(f"Precision: {precision:.2f}")
-    # print(f"Recall:    {recall:.2f}")
-
-
-    # print("DecisionTreeClassifier")
-
-    # tree = DecisionTreeClassifier()
-    # tree.fit(X,Y)
-    # y_pred = tree.predict(X_test)
-    
-    # accuracy = accuracy_score(Y_test, y_pred)
-    # f1 = f1_score(Y_test, y_pred)
-    # precision = precision_score(Y_test, y_pred)
-    # recall = recall_score(Y_test, y_pred)
-    
-    # print(f"Accuracy:  {accuracy:.2f}")
-    # print(f"F1 Score:  {f1:.2f}")
-    # print(f"Precision: {precision:.2f}")
-    # print(f"Recall:    {recall:.2f}")
-  
-    # print("RandomForestClassifier")
-
-    # rf = RandomForestClassifier()
-    # rf.fit(X,Y)
-    # y_pred = rf.predict(X_test)
-    
-    # accuracy = accuracy_score(Y_test, y_pred)
-    # f1 = f1_score(Y_test, y_pred)
-    # precision = precision_score(Y_test, y_pred)
-    # recall = recall_score(Y_test, y_pred)
-    
-    # print(f"Accuracy:  {accuracy:.2f}")
-    # print(f"F1 Score:  {f1:.2f}")
-    # print(f"Precision: {precision:.2f}")
-    # print(f"Recall:    {recall:.2f}")
-
-    # print("AdaBoostClassifier")
-
-    # ada = AdaBoostClassifier()
-    # ada.fit(X,Y)
-    # y_pred = ada.predict(X_test)
-    
-    # accuracy = accuracy_score(Y_test, y_pred)
-    # f1 = f1_score(Y_test, y_pred)
-    # precision = precision_score(Y_test, y_pred)
-    # recall = recall_score(Y_test, y_pred)
-    
-    # print(f"Accuracy:  {accuracy:.2f}")
-    # print(f"F1 Score:  {f1:.2f}")
-    # print(f"Precision: {precision:.2f}")
-    # print(f"Recall:    {recall:.2f}")
-
-    # print("SVC")
-
-    # svc = SVC(max_iter=1000)
-    # svc.fit(X,Y)
-    # y_pred = svc.predict(X_test)
-    
-    # accuracy = accuracy_score(Y_test, y_pred)
-    # f1 = f1_score(Y_test, y_pred)
-    # precision = precision_score(Y_test, y_pred)
-    # recall = recall_score(Y_test, y_pred)
-    
-    # print(f"Accuracy:  {accuracy:.2f}")
-    # print(f"F1 Score:  {f1:.2f}")
-    # print(f"Precision: {precision:.2f}")
-    # print(f"Recall:    {recall:.2f}")
- 
-    print("MLP")
-
-    mlp = MLPClassifier(max_iter=100)
-    mlp.fit(X,Y)
-    y_pred = mlp.predict(X_test)
-    
-    accuracy = accuracy_score(Y_test, y_pred)
-    f1 = f1_score(Y_test, y_pred)
-    precision = precision_score(Y_test, y_pred)
-    recall = recall_score(Y_test, y_pred)
-    
-    print(f"Accuracy:  {accuracy:.2f}")
-    print(f"F1 Score:  {f1:.2f}")
-    print(f"Precision: {precision:.2f}")
-    print(f"Recall:    {recall:.2f}")
+    for name, model in models.items():
+        accuracy, f1, precision, recall, treino, teste = run_model(
+            model, X, Y, X_test, Y_test
+        )
+        print(f"Modelo:    {name}")
+        print(f"Accuracy:  {accuracy:.2f}")
+        print(f"F1 Score:  {f1:.2f}")
+        print(f"Precision: {precision:.2f}")
+        print(f"Recall:    {recall:.2f}")
+        print(f"Treino:    {treino:.2f}")
+        print(f"Teste:     {teste:.2f}")
 
 
 if __name__ == "__main__":
