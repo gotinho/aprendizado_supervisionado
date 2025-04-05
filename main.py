@@ -1,6 +1,7 @@
 import pandas as pd
 import zipfile
 import time
+import os
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
@@ -64,17 +65,45 @@ def main():
         "Naive Bayes": GaussianNB(var_smoothing=0.5),
     }
 
-    for name, model in models.items():
-        accuracy, f1, precision, recall, treino, teste = run_model(
-            model, X, Y, X_test, Y_test
+    diretorio = "output"
+    arquivo_resultado = "resultado.csv"
+    if not os.path.exists(diretorio):
+        os.makedirs(diretorio)
+
+    with open(os.path.join(diretorio, arquivo_resultado), "w") as saida:
+        saida.write("Modelo;Accuracy;F1 Score;Precision;Recall;Treino;Teste\n")
+        for name, model in models.items():
+            accuracy, f1, precision, recall, treino, teste = run_model(
+                model, X, Y, X_test, Y_test
+            )
+            print(f"Modelo:    {name}")
+            print(f"Accuracy:  {accuracy:.2f}")
+            print(f"F1 Score:  {f1:.2f}")
+            print(f"Precision: {precision:.2f}")
+            print(f"Recall:    {recall:.2f}")
+            print(f"Treino:    {treino:.2f}")
+            print(f"Teste:     {teste:.2f}\n")
+            saida.write(
+                f"{name};{accuracy:.2f};{f1:.2f};{precision:.2f};{recall:.2f};{treino:.2f};{teste:.2f}\n"
+            )
+
+        modelo_escolhido = RandomForestClassifier(
+            n_estimators=10, max_depth=10, max_features="log2", n_jobs=-1
         )
-        print(f"Modelo:    {name}")
+        accuracy, f1, precision, recall, treino, teste = run_model(
+            modelo_escolhido, X, Y, X_test, Y_test
+        )
+        print("======================================")
+        print(f"Modelo:    {modelo_escolhido}")
         print(f"Accuracy:  {accuracy:.2f}")
         print(f"F1 Score:  {f1:.2f}")
         print(f"Precision: {precision:.2f}")
         print(f"Recall:    {recall:.2f}")
         print(f"Treino:    {treino:.2f}")
         print(f"Teste:     {teste:.2f}")
+        saida.write(
+            f"*RandomForest;{accuracy:.2f};{f1:.2f};{precision:.2f};{recall:.2f};{treino:.2f};{teste:.2f}\n"
+        )
 
 
 if __name__ == "__main__":
